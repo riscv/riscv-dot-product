@@ -1,0 +1,28 @@
+[appendix]
+[[vector_dot_product_instructions]]
+=== Vector Dot Product Instructions
+
+OP-V (0x57)
+Vector dot product instruction
+
+[cols="4,1,1,1,1,4,1,1,1,4,1,1,1"]
+|===
+5+^|Integer 4+^|Integer 4+^| FP
+
+| funct3 | | | |            | funct3 | | |             | funct3 | | |
+| OPIVV  |V| | |            | OPMVV  |V| |             | OPFVV  |V| |
+| OPIVX  | |X| |            | OPMVX  | |X|             | OPFVF  | |F|
+| OPIVI  | | |I|            |        | | |             |        | | |
+|===
+
+[cols="4,1,1,1,6,4,1,1,6,4,1,1,6"]
+
+|===
+5+^| funct6                  4+^| funct6                 4+^| funct6
+
+| 101000 |V|X|I| `vsrl`    | 101000 |V|X| `vqdotu`  | 101000 |V|F| `vfmadd`
+| 101010 |V|X|I| `vssrl`   | 101010 |V|X| `vqdotsu` | 101010 |V|F| `vfmsub`
+| 101100 |V|X|I| `vnsrl`   | 101100 |V|X| `vqdot`   | 101100 |V|F| `vfmacc`
+| 101110 |V|X|I| `vnclipu` | 101110 | |X| `vqdotus` | 101110 |V|F| `vfmsac`
+|===
+

@@ -3,5 +3,6 @@
 This RISC-V specification has been contributed to directly or indirectly by:
 
 [%hardbreaks]
-* Author1 <required1@email.com>
-* Author2 <required2@email.com>
+* Nicolas Brunie <nicolas.brunie@sifive.com>
+* John Simpson <john.simpson@sifive.com>
+* Andrew Waterman <andrew@sifive.com>
