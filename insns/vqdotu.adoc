@@ -1,0 +1,71 @@
+[[insns-vqdotu, Vector 8-bit Unsigned Dot Product]]
+= vqdotu.[vv,vx]
+
+Synopsis::
+Vector 8-bit Unsigned Dot Product
+
+Mnemonic::
+vqdotu.vv vd, vs2, vs1, vm +
+vqdotu.vx vd, vs2, rs1, vm +
+
+
+.Encoding (Vector-Vector)
+image::isa-vqdotu-vv.png[width=500]
+
+.Encoding (Vector-Scalar)
+image::isa-vqdotu-vx.png[width=500]
+
+Reserved Encodings::
+* `SEW` is any value other than 32
+
+Arguments::
+
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register
+|Direction
+|Definition
+
+| `vs1`/`rs1` | input  | unsigned multiplier
+| `vs2`       | input  | unsigned multiplicand
+| `vd`        | input  | unsigned accumulator source
+| `vd`        | output | unsigned accumulated dot product
+|===
+
+
+Description::
+`vqdotu` performs a partial dot product of two vectors of 8-bit unsigned integers,
+accumulating the partial sums into a vector of 32-bit unsigned integers.
++
+In the vector-vector (`.vv`) variant,
+each 32-bit element of `vs1` and `vs2` is interpreted as a list of four 8-bit unsigned integer sub-elements,
+whereas each 32-bit element of `vd` is interpreted as a single 32-bit unsigned integer.
+For each pair of elements taken consecutively from `vs1` and `vs2`,
+the associated sub-element lists are multiplied componentwise,
+widening (with zero-extension) to 32 bits.
+Finally, the four products are accumulated into the associated element of `vd`,
+wrapping on unsigned overflow.
++
+The vector-scalar (`.vx`) variant reuses a single 32-bit element,
+read from integer register `rs1`, instead of a vector (`vs1`) of such elements.
+
+Operation::
+[source,sail]
+--
+function clause execute (VQDOTU(vs2, vs1, vd, suffix)) = {
+  foreach (i from vstart to vl-1) {
+    // TODO sign extension
+    let {a0 @ a1 @ a2 @ a3} : bits (4*8) = get_velem(vs2, i)
+    let {b0 @ b1 @ b2 @ b3} : bits (4*8) = if suffix =="vv" then get_velem(vs1, i)
+                          else zext_or_truncate_to_sew(X(rs1));
+    let acc : bits (SEW) = get_velem(vd, i);
+    let res : bits (SEW) = a0 * b0 + a1 * b1 + a2 * b2 + a3 * b3 + acc;
+    set_velem(vd, i, product);
+  }
+  RETIRE_SUCCESS
+}
+--
+
+Included in::
+<<Zvqdotq>>

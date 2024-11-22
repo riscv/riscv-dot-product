@@ -1,0 +1,29 @@
+[[dot_product_extensions]]
+== Extensions Overview
+
+The section introduces all of the extensions in the Vector Dot Product Instruction Set Extension Specification.
+
+All the Vector Dot Product Extensions can be built on _any_ embedded (Zve*) or application ("V") base Vector Extension.
+include::vector-dot-product-zvdot.adoc[]
+<<<
+
+// ------------------------------------------------------------
+
+[[vector_dot_product_insns, reftext="Vector Dot Product Instructions"]]
+== Vector Dot Product Instructions
+
+include::insns/vqdot.adoc[leveloffset=+2]
+<<<
+
+include::insns/vqdotu.adoc[leveloffset=+2]
+<<<
+
+include::insns/vqdotsu.adoc[leveloffset=+2]
+<<<
+
+include::insns/vqdotus.adoc[leveloffset=+2]
+<<<
+
+[[Proposed_Encodings, reftext="Proposed Encodings"]]
+== Proposed Encodings
+include::vector-dot-product-inst-table.adoc[]

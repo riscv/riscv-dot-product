@@ -1,0 +1,72 @@
+[[insns-vqdot, Vector 8-bit Signed-Signed Dot Product]]
+= vqdot.[vv,vx]
+
+Synopsis::
+Vector 8-bit Signed-Signed Dot Product
+
+Mnemonic::
+vqdot.vv vd, vs2, vs1, vm +
+vqdot.vx vd, vs2, rs1, vm +
+
+
+.Encoding (Vector-Vector)
+image::isa-vqdot-vv.png[width=500]
+
+
+.Encoding (Vector-Scalar)
+image::isa-vqdot-vx.png[width=500]
+
+Reserved Encodings::
+* `SEW` is any value other than 32
+
+Arguments::
+
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register
+|Direction
+|Definition
+
+| `vs1`/`rs1` | input  | vector of 8-bit signed multipliers
+| `vs2`       | input  | vector of 8-bit signed multiplicands
+| `vd`        | input  | vector of 32-bit signed accumulator sources
+| `vd`        | output | vector of 32-bit signed accumulated dot products
+|===
+
+Description::
+`vqdot` performs a partial dot product of two vectors of 8-bit signed integers,
+accumulating the partial sums into a vector of 32-bit signed integers.
++
+In the vector-vector (`.vv`) variant,
+each 32-bit element of `vs1` and `vs2` is interpreted as a list of four 8-bit signed integer sub-elements,
+whereas each 32-bit element of `vd` is interpreted as a single 32-bit signed integer.
+For each pair of elements taken consecutively from `vs1` and `vs2`,
+the associated sub-element lists are multiplied componentwise,
+widening (with sign-extension) to 32 bits.
+Finally, the four products are accumulated into the associated element of `vd`,
+wrapping on signed overflow.
++
+The vector-scalar (`.vx`) variant reuses a single 32-bit element,
+read from integer register `rs1`, instead of a vector (`vs1`) of such elements.
+
+
+Operation::
+[source,sail]
+--
+function clause execute (VQDOT(vs2, vs1, vd, suffix)) = {
+  foreach (i from vstart to vl-1) {
+    // TODO sign extension
+    let {a0 @ a1 @ a2 @ a3} : bits (4*8) = get_velem(vs2, i)
+    let {b0 @ b1 @ b2 @ b3} : bits (4*8) = if suffix =="vv" then get_velem(vs1, i)
+                          else zext_or_truncate_to_sew(X(rs1));
+    let acc : bits (SEW) = get_velem(vd, i);
+    let res : bits (SEW) = a0 * b0 + a1 * b1 + a2 * b2 + a3 * b3 + acc;
+    set_velem(vd, i, product);
+  }
+  RETIRE_SUCCESS
+}
+--
+
+Included in::
+<<Zvqdotq>>
