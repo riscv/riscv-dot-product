@@ -1,4 +1,4 @@
-= Vector Dot-Product Extension (Zqvdotq)
+= Vector Dot-Product Extension (Zvqdotq)
 :description: The vector dot product extension
 :docgroup: SiFive
 :company: SiFive
