@@ -11,8 +11,6 @@ These vector dot product instructions are defined with a fixed SEW value of 32. 
 
 The number of body bundles is determined by `vl`. The operation can be masked, each mask bit determines whether the corresponding element result is active or not.
 
-Fractional values of `LMUL` that result in `LMUL*VLEN < SEW` are not supported and cause an illegal instruction exception.
-
 NOTE::
 Future variants could be defined for different SEW values thus:
 [%autowidth]
