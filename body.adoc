@@ -4,7 +4,7 @@
 The section introduces all of the extensions in the Vector Dot Product Instruction Set Extension Specification.
 
 All the Vector Dot Product Extensions can be built on _any_ embedded (Zve*) or application ("V") base Vector Extension.
-include::vector-dot-product-zvdot.adoc[]
+include::vector-dot-product-zvqdotq.adoc[]
 <<<
 
 // ------------------------------------------------------------
