@@ -10,11 +10,34 @@ vqdot.vx vd, vs2, rs1, vm +
 
 
 .Encoding (Vector-Vector)
-image::isa-vqdot-vv.png[width=500]
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 'OP-V'},
+{bits: 5, name: 'vd'},
+{bits: 3, name: 'OPMVV'},
+{bits: 5, name: 'vs1'},
+{bits: 5, name: 'vs2'},
+{bits: 1, name: 'vm'},
+{bits: 6, name: '101100'},
+]}
+....
+
 
 
 .Encoding (Vector-Scalar)
-image::isa-vqdot-vx.png[width=500]
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 'OP-V'},
+{bits: 5, name: 'vd'},
+{bits: 3, name: 'OPMVX'},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'vs2'},
+{bits: 1, name: 'vm'},
+{bits: 6, name: '101100'},
+]}
+....
 
 Reserved Encodings::
 * `SEW` is any value other than 32
